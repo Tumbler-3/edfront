@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -7,14 +7,6 @@ const Login = () => {
 
   const swal = require("sweetalert2");
   const navigate = useNavigate();
-  const [authTokens, setauthTokens] = useState(() =>
-    localStorage.getItem("authToken") ? JSON.parse("authToken") : null
-  );
-  const [user, setuser] = useState(() =>
-    localStorage.getItem("authToken")
-      ? jwtDecode(localStorage.getItem("authToken"))
-      : null
-  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +18,6 @@ const Login = () => {
     const response = await fetch("http://127.0.0.1:8000/api/token/create/", {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
@@ -34,11 +25,12 @@ const Login = () => {
     const data = await response.json();
 
     if (response.status === 200) {
-      setauthTokens(data);
-      setuser(jwtDecode(data.access));
-      localStorage.setItem("authTokens", JSON.stringify(data));
-      console.log("data", data);
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
+      localStorage.setItem("user", JSON.stringify(jwtDecode(data.access).user_id));
+      console.log(localStorage.getItem('user'))
       navigate("/");
+      navigate(0);
       swal.fire({
         title: "Login Success",
         icon: "success",

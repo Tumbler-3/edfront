@@ -23,7 +23,6 @@ const Register = () => {
       },
     });
     const data = await response.json();
-    console.log("USer created", response.status);
     if (response.status === 201) {
       swal.fire({
         title: "Registration Success",
@@ -34,6 +33,7 @@ const Register = () => {
         timerProgressBar: true,
         showConfirmButton: false,
       });
+      navigate('/')
     } else {
       console.log(response.status);
       console.log("An Error Occured");
