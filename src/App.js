@@ -1,20 +1,16 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Login, Logout, Register, Reset } from "./features/auth";
-import { Posts } from "./features/post";
+import { Posts, Detail } from "./features/post";
 import userExists from "./features/auth/User";
 
 const App = () => {
-  if (userExists) {
-    const id = localStorage.getItem("user");
-  }
-
   const User = userExists() ? (
     <>
       <br></br>
       <a href="/logout">Logout</a>
       <br></br>
-      <a href="/posts">Posts</a>
+      <Link to={`/${localStorage.getItem("user")}/posts`}>Posts</Link>
     </>
   ) : (
     <>
@@ -27,19 +23,23 @@ const App = () => {
   );
 
   return (
-    <div className="App">
-      <div className="container">App</div>
-      {User}
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+        <div className="container">App</div>
+        {User}
+        <br></br>
+        <a href="/">Main</a>
+
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/posts" element={<Posts />} />
+          <Route path="/:userid/posts" element={<Posts />} />
+          <Route path="/post/:postid" element={<Detail />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 };
 
