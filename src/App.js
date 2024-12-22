@@ -10,7 +10,7 @@ const App = () => {
       <br></br>
       <a href="/logout">Logout</a>
       <br></br>
-      <Link to={`/${localStorage.getItem("user")}/posts`}>Posts</Link>
+      <Link to={`/${localStorage.getItem("user")}/posts`}>Your Posts</Link>
     </>
   ) : (
     <>
